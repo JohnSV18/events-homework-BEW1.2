@@ -11,7 +11,10 @@ from sqlalchemy.orm import backref
 
 class Guest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-
+    name = db.Column(db.String(80), nullable=False, unique=True)
+    email = db.Column(db.String(80), nullable=False, unique=True)
+    phone = db.Column(db.String(80), nullable=False, unique=True)
+    events_attending = db.relationship('Event', secondary=guest_event, back_populates='guests')
 # TODO: Create a model called `Event` with the following fields:
 # - id: primary key
 # - title: String column
@@ -24,6 +27,9 @@ class Guest(db.Model):
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(80), nullable=False, unique=True)
+    description = db.Column(db.String(80), nullable=False, unique=True)
+    date_and_time = db.Column(db.DateTime(),nullable=True )
 
 # TODO: Create a table `guest_event_table` with the following columns:
 # - event_id: Integer column (foreign key)
