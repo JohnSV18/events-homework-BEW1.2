@@ -19,7 +19,8 @@ def index():
     """Show upcoming events to users!"""
     # TODO: Get all events and send to the template
     context = {
-        'events': Event.query.all()}
+        'event': Event.query.all()
+        }
     return render_template('index.html', **context)
 
 
@@ -27,7 +28,7 @@ def index():
 def event_detail(event_id):
     """Show a single event."""
     context = {
-        'event': Event.query.filter_by(id=event_id).one()
+        'events': Event.query.filter_by(id=event_id).one()
     }
     # TODO: Get the event with the given id and send to the template
     return render_template('event_detail.html', **context)

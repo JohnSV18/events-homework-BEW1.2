@@ -14,7 +14,7 @@ class Guest(db.Model):
     name = db.Column(db.String(80), nullable=False, unique=True)
     email = db.Column(db.String(80), nullable=False, unique=True)
     phone = db.Column(db.String(80), nullable=False, unique=True)
-    events_attending = db.relationship('Event', secondary='guest_event_table', back_populates='guest')
+    events_attending = db.relationship('Event', secondary='guest_event_table', back_populates='guests')
 # TODO: Create a model called `Event` with the following fields:
 # - id: primary key
 # - title: String column
@@ -25,18 +25,24 @@ class Guest(db.Model):
 # STRETCH CHALLENGE: Add a field `event_type` as an Enum column that denotes the
 # type of event (Party, Study, Networking, etc)
 
-class Event(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(80), nullable=False, unique=True)
-    description = db.Column(db.String(80), nullable=False, unique=True)
-    date_and_time = db.Column(db.DateTime(),nullable=True )
-    guests = db.relationship('Guest', secondary='guest_event_table', back_populates='event')
+# class Event(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     # title = db.Column(db.String(80), nullable=False)
+#     # description = db.Column(db.String(80), nullable=False, unique=True)
+#     date_and_time = db.Column(db.DateTime(),nullable=True )
+#     guests = db.relationship('Guest', secondary='guest_event_table', back_populates='events_attending')
 
-# TODO: Create a table `guest_event_table` with the following columns:
-# - event_id: Integer column (foreign key)
-# - guest_id: Integer column (foreign key)
+class Event(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(80), nullable=False)
+    guests = db.relationship('Guest', secondary = 'guest_event_table', back_populates='events_attending')
+
+# # TODO: Create a table `guest_event_table` with the following columns:
+# # - event_id: Integer column (foreign key)
+# # - guest_id: Integer column (foreign key)
 
 guest_event_table = db.Table('guest_event_table', 
-    db.Column('guest_id', db.Integer, db.ForeignKey('guest.id')),
-    db.Column('event_id', db.Integer, db.ForeignKey('event.id'))
+    db.Column('event_id', db.Integer, db.ForeignKey('event.id')),
+    db.Column('guest_id', db.Integer, db.ForeignKey('guest.id'))
+    
 )
