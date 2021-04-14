@@ -30,9 +30,13 @@ class Event(db.Model):
     title = db.Column(db.String(80), nullable=False, unique=True)
     description = db.Column(db.String(80), nullable=False, unique=True)
     date_and_time = db.Column(db.DateTime(),nullable=True )
+    guests = db.relationship('Guest', secondary=guest_event, back_populates='events')
 
 # TODO: Create a table `guest_event_table` with the following columns:
 # - event_id: Integer column (foreign key)
 # - guest_id: Integer column (foreign key)
 
-guest_event_table = None
+guest_event_table = db.Table('guest_event_table', 
+    db.Column('guest_id', db.Integer, db.ForeignKey('guest.id')),
+    db.Column('event_id', db.Integer, db.ForeignKey('event.id'))
+)
